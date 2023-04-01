@@ -13,7 +13,7 @@ def retry(
         tries: int,
         allowed_exceptions: t.Tuple[t.Type[Exception], ...] = (),
         intervals: Intervals = (1,),
-        fail_cb: CallbackFunction | None= None,
+        fail_cb: CallbackFunction | None = None,
         logger: logging.Logger = log,
 ) -> t.Callable[[TargetFunction], TargetFunction]:
     def wrapper(fn: TargetFunction) -> TargetFunction | CallbackFunction:
