@@ -11,9 +11,9 @@ log = logging.getLogger('retry_decorator')
 
 def retry(
         tries: int,
-        intervals: Intervals,
-        fail_cb: CallbackFunction,
-        allowed_exceptions: t.Tuple[t.Type[Exception], ...],
+        allowed_exceptions: t.Tuple[t.Type[Exception], ...] = (),
+        intervals: Intervals = (1,),
+        fail_cb: CallbackFunction | None= None,
         logger: logging.Logger = log,
 ) -> t.Callable[[TargetFunction], TargetFunction]:
     def wrapper(fn: TargetFunction) -> TargetFunction | CallbackFunction:
@@ -28,17 +28,22 @@ def retry(
                         logger.debug(f'Got result from the {try_idx} retry.')
                     return result
                 except allowed_exceptions:
-                    try:
-                        interval = intervals[try_idx]
-                    except IndexError:
-                        interval = intervals[-1]
+                    pass
 
-                    if try_idx > 0:
-                        logger.debug(f'Sleep {interval} seconds before retry.')
-                    await asyncio.sleep(interval)
+                try:
+                    interval = intervals[try_idx]
+                except IndexError:
+                    interval = intervals[-1]
 
-            logger.info(f'Failed to get result for the callable {fn}. Call a callback {fail_cb} and return.')
-            return fail_cb(*args, **kwargs)
+                if try_idx > 0:
+                    logger.debug(f'Sleep {interval} seconds before retry.')
+                await asyncio.sleep(interval)
+
+            if fail_cb:
+                logger.info(f'Failed to get result for the callable {fn}. Call a callback {fail_cb} and return.')
+                return fail_cb(*args, **kwargs)
+            else:
+                logger.info('All retry attempts failed. Stop trying.')
 
         return wrapped
 
