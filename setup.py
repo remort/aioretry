@@ -10,5 +10,5 @@ setup(
     author='Vadim Bazhov',
     author_email='master@remort.net',
 
-    py_modules=['my_pip_package'],
+    py_modules=['aioretry_decorator'],
 )

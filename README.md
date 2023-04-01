@@ -46,4 +46,4 @@ Look into `tests.py` to see more on usage.
 
 # Install as package via pip
 
-`pip install git+https://github.com/remort/aioretry.git#egg=aioretry-decorator`
+`pip install git+https://github.com/remort/aioretry.git#egg=aioretry_decorator`

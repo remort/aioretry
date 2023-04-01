@@ -1,7 +1,5 @@
 import asyncio
-from async_retry import retry
-
-results_holder = []
+from aioretry_decorator import retry
 
 FAIL_MSG = 'Fail'
 CB_STRING = 'callback was called'
@@ -22,7 +20,8 @@ async def success_coro_1(results: list):
 def callback_func(results: list):
     results.append(CB_STRING)
 
-if __name__ == '__main__':
+def run_tests():
+    results_holder = []
     try:
         asyncio.run(retry(3, intervals=(1,))(failing_coro_1)())
     except RuntimeError as exc:
@@ -56,3 +55,7 @@ if __name__ == '__main__':
     print('test 6 done')
 
     print('All checks passed')
+
+
+if __name__ == '__main__':
+    run_tests()
