@@ -1,5 +1,5 @@
 # aioretry
-Handy decorator to set retry policies for async callables with some handy features
+Handy decorator to set retry policies for async callables with some useful features
 
 # Usage examples
 
@@ -44,6 +44,12 @@ Other possible ways to use this decorator:
 Look into `tests.py` to see more on usage.
 
 
-# Install as package via pip
+# Installation
+
+Available as a package on pypi:
+
+`pip install aioretry-decorator`
+
+Or install it directly from GitHub:
 
 `pip install git+https://github.com/remort/aioretry.git#egg=aioretry_decorator`
