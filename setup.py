@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='aioretry-decorator',
-    version='0.0.1',
+    version='1.0.0',
     description='Handy decorator to set retry policies for async callables with some handy features',
 
     url='https://github.com/remort/aioretry',
