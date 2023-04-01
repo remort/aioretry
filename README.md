@@ -42,3 +42,8 @@ Other possible ways to use this decorator:
 ```
 
 Look into `tests.py` to see more on usage.
+
+
+# Install as package via pip
+
+`pip install git+https://github.com/remort/aioretry.git#egg=aioretry-decorator`
