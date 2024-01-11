@@ -2,6 +2,7 @@ import asyncio
 import logging
 import typing as t
 
+P = t.ParamSpec('P')
 TargetFunction = t.Callable[..., t.Awaitable]
 CallbackFunction = t.Callable[..., t.Any]
 Intervals = t.Tuple[int | float, ...]
@@ -17,8 +18,8 @@ def retry(
         logger: logging.Logger = log,
 ) -> t.Callable[[TargetFunction], TargetFunction]:
     def wrapper(fn: TargetFunction) -> TargetFunction | CallbackFunction:
-        async def wrapped(*args, **kwargs) -> t.Any:
-            for try_idx in range(0, tries):
+        async def wrapped(*args: P.args, **kwargs: P.kwargs) -> t.Any:
+            for try_idx in range(tries):
                 if try_idx > 0:
                     logger.info(f'Try to run {fn.__name__} for the {try_idx} retry.')
 
