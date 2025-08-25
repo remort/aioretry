@@ -20,6 +20,10 @@ async def success_coro_1(results: list):
 def callback_func(results: list):
     results.append(CB_STRING)
 
+async def async_callback_func(results: list):
+    await asyncio.sleep(0.01)
+    results.append(CB_STRING)
+
 def run_tests():
     results_holder = []
     try:
@@ -53,6 +57,13 @@ def run_tests():
     asyncio.run(retry(10, (RuntimeError,), (0,1))(success_coro_1)(results_holder))
     assert results_holder == [1], results_holder
     print('test 6 done')
+
+    results_holder = []
+    asyncio.run(
+        retry(3, (RuntimeError,), (0,1), async_callback_func)(failing_coro_2)(results_holder)
+    )
+    assert results_holder == [1 for x in range(0, 3)] + [CB_STRING], results_holder
+    print('test 7 done')
 
     print('All checks passed')
 

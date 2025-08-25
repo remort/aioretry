@@ -6,7 +6,7 @@ long_description = (Path(__file__).parent / "README.md").read_text()
 
 setup(
     name='aioretry-decorator',
-    version='1.0.5',
+    version='1.0.6',
     description='Handy decorator to set retry policies for async callables with some useful features',
 
     url='https://github.com/remort/aioretry',

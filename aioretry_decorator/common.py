@@ -4,7 +4,7 @@ import typing as t
 
 P = t.ParamSpec('P')
 TargetFunction = t.Callable[..., t.Awaitable]
-CallbackFunction = t.Callable[..., t.Any]
+CallbackFunction = t.Callable[..., t.Any] | t.Awaitable[t.Any]
 Intervals = t.Tuple[int | float, ...]
 
 log = logging.getLogger('retry_decorator')
@@ -41,7 +41,12 @@ def retry(
                 await asyncio.sleep(interval)
 
             if fail_cb:
-                logger.info(f'Failed to get result for the callable {fn}. Call a callback {fail_cb} and return.')
+                logger.info(
+                    f'Failed to get result for the callable {fn.__name__}. '
+                    f'Call a callback {fail_cb.__name__} and return.'
+                )
+                if asyncio.iscoroutinefunction(fail_cb):
+                    return await fail_cb(*args, **kwargs)
                 return fail_cb(*args, **kwargs)
             else:
                 logger.info('All retry attempts failed. Stop trying.')
